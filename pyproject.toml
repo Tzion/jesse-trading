@@ -7,7 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-jesse = "^0.46.1"
+jesse = {path = "jesse", develop = true}
 
 
 [build-system]

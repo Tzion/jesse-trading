@@ -4,6 +4,8 @@
 *__pycache__*
 dump.rdb
 
+jesse/
+
 jesse_trading/db_postgres
 
 # Jesse bot

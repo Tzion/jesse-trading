@@ -1384,14 +1384,12 @@ files = [
 
 [[package]]
 name = "jesse"
-version = "0.46.1"
+version = "0.47.0"
 description = "A trading framework for cryptocurrencies"
 optional = false
 python-versions = ">=3.8"
-files = [
-    {file = "jesse-0.46.1-py3-none-any.whl", hash = "sha256:8dbda7dfb811f85d5c29cd4e2ded0aae5cd13ffc14484a82f8bc48fa9d9a0536"},
-    {file = "jesse-0.46.1.tar.gz", hash = "sha256:cb66bbd2d480e2b8296df9b79a690aa13e83e74d01460547568b802f6dcc2e7b"},
-]
+files = []
+develop = true
 
 [package.dependencies]
 aiofiles = "0.7.0"
@@ -1405,7 +1403,7 @@ matplotlib = "3.7.4"
 mplfinance = "0.12.8b6"
 newtulipy = "0.4.6"
 numpy = "1.23.0"
-numpy-groupies = "0.9.14"
+numpy_groupies = "0.9.14"
 pandas = "1.4.0"
 peewee = "3.14.8"
 psycopg2-binary = "2.9.9"
@@ -1425,6 +1423,10 @@ timeloop = "1.0.2"
 uvicorn = "0.23.2"
 websocket-client = "1.2.3"
 websockets = ">=10.0.0"
+
+[package.source]
+type = "directory"
+url = "jesse"
 
 [[package]]
 name = "jesse-dydx-v3-python"
@@ -3731,4 +3733,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "c124d5bdc5f969733b0b7e7b8eba503e705e4225ee94bd75df9a93985f8a9e01"
+content-hash = "51202c360fbc9629b5b6d7dc8ea0c358159f89981a30ac787b23b427ddacb2ea"
