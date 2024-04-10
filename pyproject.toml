@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "jesse-trading"
+version = "0.1.0"
+description = ""
+authors = ["zions <tzion12345@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+jesse = "^0.46.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
