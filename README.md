@@ -1,8 +1,10 @@
 ## Project Stracture
 
+```
 |--- jesse_trading
-    |--- jesse_bot: This is a where the strategies are developed and running (based on the template provided by Jesse -  `https://github.com/jesse-ai/project-template.git`)
-|--- jesse - the backtesting framework - can be pip package but I need to change some code so I imported it here
+    |--- jesse_bot: This is where the strategies are developed and running (based on the template provided by Jesse -  `https://github.com/jesse-ai/project-template.git`)
+|--- jesse: the backtesting framework - can be a pip package but I need to change some code so I imported it here
+```
 
 
 ## Setup
@@ -17,11 +19,15 @@ cp .env.example .env
 pg_ctl start ...
 ```
 - Start redit db
-```redis-server ```
+```sh
+redis-server
+```
 - Start Jesse 
-```jesse run```
+```sh
+jesse run
+```
 - Open [localhost:9000](http://localhost:9000) to see the dashboard.
 
-* This related for local run - for debugging. To run in docker see jesse instructions
+** This related for local run - for debugging. To run in docker see jesse instructions
 
 `https://github.com/jesse-ai/jesse` and `https://github.com/jesse-ai/project-template.git`

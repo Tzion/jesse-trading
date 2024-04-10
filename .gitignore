@@ -1,6 +1,8 @@
 .vscode
 /_pycache_
 .venv
+*__pycache__*
+dump.rdb
 
 jesse_trading/db_postgres
 
@@ -20,6 +22,7 @@ jesse_trading/jesse_bot/storage/logs/collect.txt
 jesse_trading/jesse_bot/storage/logs/optimize.txt
 jesse_trading/jesse_bot/storage/logs/live-trade.txt
 jesse_trading/jesse_bot/storage/logs/paper-trade.txt
+jesse_trading/jesse_bot/storage/logs/backtest-mode/
 jesse_trading/jesse_bot/storage/genetics/*.txt
 jesse_trading/jesse_bot/storage/csv/*.csv
 jesse_trading/jesse_bot/storage/json/*.json
