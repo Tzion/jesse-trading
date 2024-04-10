@@ -1,3 +1,27 @@
 .vscode
+/_pycache_
 .venv
-jesse_trading/
+
+jesse_trading/db_postgres
+
+# Jesse bot
+jesse_trading/jesse_bot/.env
+# Jesse bot storage
+jesse_trading/jesse_bot/storage/*.key
+jesse_trading/jesse_bot/storage/*.sqlite
+jesse_trading/jesse_bot/storage/*.gz
+jesse_trading/jesse_bot/storage/temp/*.pickle
+jesse_trading/jesse_bot/storage/trades/*.json
+jesse_trading/jesse_bot/storage/trading-view-pine-editor/*.txt
+jesse_trading/jesse_bot/storage/temp/optimize/*.pickle
+jesse_trading/jesse_bot/storage/orders/*.json
+jesse_trading/jesse_bot/storage/logs/trades/*.json
+jesse_trading/jesse_bot/storage/logs/collect.txt
+jesse_trading/jesse_bot/storage/logs/optimize.txt
+jesse_trading/jesse_bot/storage/logs/live-trade.txt
+jesse_trading/jesse_bot/storage/logs/paper-trade.txt
+jesse_trading/jesse_bot/storage/genetics/*.txt
+jesse_trading/jesse_bot/storage/csv/*.csv
+jesse_trading/jesse_bot/storage/json/*.json
+jesse_trading/jesse_bot/storage/charts/*.png
+jesse_trading/jesse_bot/storage/full-reports/*.html
