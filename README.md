@@ -9,11 +9,28 @@
 
 ## Setup
 
+- Clone jesse into the project (for local development):
+```sh
+git clone https://github.com/jesse-ai/jesse.git
+```
+- Set python interpreter to the correct version required (prob 3.9)
+```sh 
+poetry env use <path_to_python_binary>
+```
+- Install dependencies
+```sh
+poetry install
+```
 - Set the .env file (see .env.example)
 ```sh
+cd jesse_trading/jesse_bot
 # to create a .env file of yours
 cp .env.example .env
 ```
+
+
+## Getting started
+
 - Start PostgreSQL server
 ```sh
 pg_ctl start ...
@@ -22,7 +39,7 @@ pg_ctl start ...
 ```sh
 redis-server
 ```
-- Start Jesse 
+- Start Jesse (while virtual env is activated)
 ```sh
 jesse run
 ```
