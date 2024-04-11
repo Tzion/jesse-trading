@@ -13,15 +13,23 @@
 ```sh
 git clone https://github.com/jesse-ai/jesse.git
 ```
+
 - Set python interpreter to the correct version required (prob 3.9)
 ```sh 
 poetry env use <path_to_python_binary>
 ```
+
+- Add Jesse as editable module 
+```sh
+poetry add -e ./jesse
+```
+** This step is crucial to do as `poetry add` and NOT as `poetry install`. if you added it using `poetry install` it messed up the virutal env and may cauase weird import errors. if you mistekenly did `poetry install` you'll have to flush the virtual env and re-install the dependencies.
+
 - Install dependencies
 ```sh
 poetry install
 ```
-- Set the .env file (see .env.example)
+- Set the .env file (see comments in .env.example)
 ```sh
 cd jesse_trading/jesse_bot
 # to create a .env file of yours
