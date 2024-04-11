@@ -24,11 +24,7 @@ poetry env use <path_to_python_binary>
 poetry add -e ./jesse
 ```
 ** This step is crucial to do as `poetry add` and NOT as `poetry install`. if you added it using `poetry install` it messed up the virutal env and may cauase weird import errors. if you mistekenly did `poetry install` you'll have to flush the virtual env and re-install the dependencies.
-
-- Install dependencies
-```sh
-poetry install
-```
+* Do not run `potery install` at any time - it ruin the environment - `jesse run` does not work after that.
 - Set the .env file (see comments in .env.example)
 ```sh
 cd jesse_trading/jesse_bot
