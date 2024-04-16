@@ -11,7 +11,7 @@
 
 - Clone jesse into the project (for local development):
 ```sh
-git clone https://github.com/jesse-ai/jesse.git
+git clone https://github.com/Tzion/jesse.git
 ```
 
 - Set python interpreter to the correct version required (prob 3.9)
@@ -31,13 +31,25 @@ cd jesse_trading/jesse_bot
 # to create a .env file of yours
 cp .env.example .env
 ```
+- Set postgres database
+``` sh
+cd jesse-trading/jesse_trading
+initdb -D db_postgres/
+# Create database with privilege user (as define in .env file)
+pg_ctl -D db_postgres start
+createdb jesse_db
+psql jesse_db
+CREATE USER jesse_user WITH PASSWORD 'password';
+GRANT ALL PRIVILEGES ON DATABASE jesse_db TO jesse_user;
+pg_ctl -D db_postgres stop
+```
 
 
 ## Getting started
 
 - Start PostgreSQL server
 ```sh
-pg_ctl start ...
+pg_ctl -D jesse_trading/db_postgres/ start
 ```
 - Start redit db
 ```sh

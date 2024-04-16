@@ -7,7 +7,7 @@ dump.rdb
 
 jesse/
 
-jesse_trading/db_postgres
+jesse_trading/db_postgres/*
 
 # Jesse bot
 jesse_trading/jesse_bot/.env
