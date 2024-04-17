@@ -1,0 +1,13 @@
+{
+    "search.useIgnoreFiles": false,
+    "search.smartCase": true,
+    "search.exclude": {
+        "**/logs/**": true,
+    },
+    "python.autoComplete.extraPaths": [
+        "${workspaceFolder}/jesse"
+    ],
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/jesse"
+    ],
+}

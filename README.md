@@ -26,19 +26,12 @@ source .venv/bin/activate
 
 - Add jesse as editable module 
 ```sh
-poetry add -e ./jesse
-# this one also works!
-pip install -e jesse --config-settings editable_mode=strict
-
-# this one works!
-poetry add git+https://github.com/Tzion/jesse.git --dev
+poetry add -editable ./jesse
 ```
 ** This step is crucial to do as `poetry add` and NOT as `poetry install`. if you added it using `poetry install` it messed up the virutal env and may cauase weird import errors. if you mistekenly did `poetry install` you'll have to flush the virtual env and re-install the dependencies.
 * Do not run `potery install` at any time - it ruin the environment - `jesse run` does not work after that.
--# this should replace all the above
-```sh
-poetry install
-```
+
+- If `poetry install` will be needed at some point, a workaround to the bug could be `poetry add -e git+https://github.com/Tzion/jesse.git` - but then the package will be installed in the venv directory.
 
 - Set the .env file (see comments in .env.example)
 ```sh
