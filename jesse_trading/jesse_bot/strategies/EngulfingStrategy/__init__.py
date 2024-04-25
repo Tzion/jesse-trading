@@ -7,10 +7,10 @@ import talib
 """
 Rules: bullish engulfing candle when rsi is above 50 and price is above EMA 200
 Results: 
-    - win-rate: 35-42%
-    - tested between Feb-March 24, on largest 19 crypto pairs
-    - 1h, 4h timeframes showed same results
-    - support and resistance area may improve results
+    - win-rate: 50%, RRR: 1.5
+    - tested between Feb-March 24, on largest 18 crypto pairs (excluded LUNA because of platform bug), 4h timeframe
+    - 1h may show better results
+    - Big improve achieved by 2 take profits - 1:1 and 1:2
 """
 
 
@@ -58,7 +58,7 @@ class EngulfingStrategy(Strategy):
 
         # Prices
         self.stop_length = 1 * (self.high - self.low)
-        self.take_profit_length = 2 * self.stop_length
+        # self.take_profit_length = 1 * self.stop_length
         self.qty = self.risk_amount / self.stop_length
         position_size = self.qty * self.price
 
@@ -83,18 +83,20 @@ class EngulfingStrategy(Strategy):
         self.buy = self.qty, self.price
         # Prapare prices for next orders (can be placed only after order execution)
         self.pending_stop_loss = self.price - self.stop_length
-        self.pending_take_profit = self.price + self.take_profit_length
+        self.pending_take_profit_1 = self.price + 1 * self.stop_length
+        self.pending_take_profit_2 = self.price + 2 * self.stop_length
 
 
     def on_open_position(self, order):
         qty = self.position.qty
         self.stop_loss = qty, self.pending_stop_loss
-        self.take_profit = qty, self.pending_take_profit
+        self.take_profit = [(qty/2, self.pending_take_profit_1), (qty/2, self.pending_take_profit_2)]
 
     def update_position(self):
         # proceed stop to entry price after movement of 1-risk
         if self.proceed_stop:
-            if self.price - self.position.entry_price >= self.stop_length * 1.2:
+            if self.price - self.position.entry_price >= self.stop_length * 1.2 and self.stop_loss[0][1] != self.position.entry_price:
+                logger.info(f"Proceeding stop to entry price")
                 self.stop_loss = self.position.qty, self.position.entry_price
 
         if self.engulfing[-1] == -100:
