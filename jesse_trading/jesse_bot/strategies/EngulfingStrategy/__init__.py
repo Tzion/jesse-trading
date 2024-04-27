@@ -26,7 +26,7 @@ class EngulfingStrategy(Strategy):
         super().__init__()
         self.risk_amount = 50
         self.proceed_stop = True
-        self.max_open_trades = False
+        self.max_open_trades = 3
 
     def should_long(self) -> bool:
         ema_200 = ta.ema(self.candles, period=200, source_type='close', sequential=True)
