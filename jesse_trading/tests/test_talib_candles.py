@@ -14,10 +14,10 @@ class TestEngulfingCandles(unittest.TestCase):
         # Define the test candle data
 
         candles = {
-            'open': [170.92, 187.07, 174.15, 175.47],
-            'high': [182.87, 190.78, 196.48, 184.68],
-            'low': [170.10, 176.94, 170.13, 169.16],
-            'close': [170.70, 177.32, 192.34, 169.30]
+            'open': [ 7.9, 8.0, 7.2,],
+            'high': [ 8.8, 9.7, 9.4, ],
+            'low': [7.1, 7.0, 7.1, ],
+            'close': [ 7.7, 7.3, 9.3,]
         }
 
 
@@ -32,7 +32,6 @@ class TestEngulfingCandles(unittest.TestCase):
 
         # Check if the last candle is engulfing
         last_candle_engulfing = engulfing_pattern[-1] != 0
-        print(engulfing_pattern)
 
         # Assert the result
         if not last_candle_engulfing:
