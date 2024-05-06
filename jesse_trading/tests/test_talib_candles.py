@@ -14,10 +14,10 @@ class TestEngulfingCandles(unittest.TestCase):
         # Define the test candle data
 
         candles = {
-            'open': [ 7.9, 8.0, 7.2,],
-            'high': [ 8.8, 9.7, 9.4, ],
-            'low': [7.1, 7.0, 7.1, ],
-            'close': [ 7.7, 7.3, 9.3,]
+            'open': [ 7.9, 8.0, 7.2],
+            'high': [ 8.8, 9.7, 9.4],
+            'low': [7.1, 7.0, 7.1 ],
+            'close': [ 7.7, 7.3, 9.3]
         }
 
 
