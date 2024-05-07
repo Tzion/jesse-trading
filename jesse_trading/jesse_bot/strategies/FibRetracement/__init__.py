@@ -2,6 +2,7 @@ from jesse.strategies import Strategy, cached
 from jesse import utils
 import jesse.indicators as ta
 import pandas_ta as pta
+import pandas as pd
 import jesse.services.logger as logger
 from datetime import datetime
 from jesse import utils
@@ -89,8 +90,13 @@ class FibRetracement(Strategy):
     def should_short(self) -> bool:
         daily_open = self.get_candles(self.exchange, self.symbol,'1D')[-1][OPEN_IDX] 
         open_around_yesterdays_low = daily_open - self.yest_range * 0.1 <= daily_open <= daily_open + self.yest_range * 0.1
-        reversal_pattern = talib.CDLSHOOTINGSTAR(self.candles[-1:,OPEN_IDX], self.candles[-1:,HIGH_IDX], self.candles[-1:,LOW_IDX], self.candles[-1:,CLOSE_IDX])
-        if reversal_pattern: logger.info(f"reversal pattern: {reversal_pattern}")
+        reversal_pattern = pta.cdl_pattern(pd.Series(self.candles[-1:,OPEN_IDX]),
+                                           pd.Series(self.candles[-1:,HIGH_IDX]),
+                                           pd.Series(self.candles[-1:,LOW_IDX]),
+                                           pd.Series(self.candles[-1:,CLOSE_IDX], name='shootingstar')
+        )
+        if reversal_pattern: 
+            logger.info(f"reversal pattern: {reversal_pattern}")
 
         if self.trend_down and open_around_yesterdays_low and reversal_pattern:
             return True
