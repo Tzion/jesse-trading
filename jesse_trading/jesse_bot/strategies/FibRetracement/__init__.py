@@ -1,8 +1,11 @@
 from jesse.strategies import Strategy, cached
 from jesse import utils
 import jesse.indicators as ta
+import pandas_ta as pta
 import jesse.services.logger as logger
 from datetime import datetime
+from jesse import utils
+import talib
 
 
 
@@ -26,7 +29,7 @@ class FibRetracement(Strategy):
         self.start_of_day = daily_candles[-1][TIME_IDX]
         self.yest_high = daily_candles[-2][HIGH_IDX]
         self.yest_low = daily_candles[-2][LOW_IDX]
-        logger.info(f"yest_high: {self.yest_high}, yest_low: {self.yest_low}")
+        # logger.info(f"yest_high: {self.yest_high}, yest_low: {self.yest_low}")
         
         ema_fast = ta.ema(daily_candles, 20, sequential=True)
         ema_meduim = ta.ema(daily_candles, 70, sequential=True)
@@ -85,8 +88,9 @@ class FibRetracement(Strategy):
     
     def should_short(self) -> bool:
         daily_open = self.get_candles(self.exchange, self.symbol,'1D')[-1][OPEN_IDX] 
-        open_around_yesterdays_low = daily_open + self.yest_range * 0.1 <= daily_open <= daily_open - self.yest_range * 0.1
-        reversal_pattern = None # TODO 
+        open_around_yesterdays_low = daily_open - self.yest_range * 0.1 <= daily_open <= daily_open + self.yest_range * 0.1
+        reversal_pattern = talib.CDLSHOOTINGSTAR(self.candles[-1:,OPEN_IDX], self.candles[-1:,HIGH_IDX], self.candles[-1:,LOW_IDX], self.candles[-1:,CLOSE_IDX])
+        if reversal_pattern: logger.info(f"reversal pattern: {reversal_pattern}")
 
         if self.trend_down and open_around_yesterdays_low and reversal_pattern:
             return True
@@ -95,7 +99,21 @@ class FibRetracement(Strategy):
 
     
     def go_short(self):
-        # For futures trading only
+        stop_price = self.price + self.fib_61 - self.fib_38
+        self.qty = utils.risk_to_qty(self.capital, (50/self.capital)*100, self.price, stop_price)
+        self.buy = self.qty, self.price
+        # Prapare prices for next orders (can be placed only after order execution)
+        self.stop_loss = self.qty, stop_price
+        self.take_profit = [(self.qty, self.price + 1 * (self.price - stop_price)), (self.qty, self.price + 2 * (self.price - stop_price))]
+        # self.pending_stop_loss = self.price - self.stop_length
+        # self.pending_take_profit_1 = self.price + 1 * self.stop_length
+        # self.pending_take_profit_2 = self.price + 2 * self.stop_length
+
+
+    def on_open_position(self, order):
+        # qty = self.position.qty
+        # self.stop_loss = qty, self.pending_stop_loss
+        # self.take_profit = [(qty/2, self.pending_take_profit_1), (qty/2, self.pending_take_profit_2)]
         pass
 
     

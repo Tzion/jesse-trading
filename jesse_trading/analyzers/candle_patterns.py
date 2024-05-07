@@ -6,7 +6,7 @@ CLOSE_IDX = 2
 HIGH_IDX = 3
 LOW_IDX = 4
 
-def is_reversal_pattern(candles):
+def is_bearish_reversal_pattern(candles):
     patterns = [
         talib.CDLENGULFING,
         talib.CDLHARAMI,
@@ -47,6 +47,6 @@ def is_reversal_pattern(candles):
     ]
     for pattern in patterns:
         result = pattern(candles[:, OPEN_IDX], candles[:, HIGH_IDX], candles[:, LOW_IDX], candles[:, CLOSE_IDX])
-        if result[-1] != 0:
+        if result[-1] == -1:
             return True
     return False
