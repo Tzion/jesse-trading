@@ -8,7 +8,8 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.9"
 jesse = {path = "jesse", develop = true}
-
+pandas-ta = "^0.3.14b0"
+    
 
 [build-system]
 requires = ["poetry-core"]
