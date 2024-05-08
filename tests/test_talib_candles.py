@@ -4,11 +4,7 @@ import numpy as np
 import pandas as pd
 import pandas_ta as pta
 
-import sys
-import os
-# sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from jesse_trading import charts
-
 
 class TestCandlesRegocnition(unittest.TestCase):
 
@@ -63,6 +59,3 @@ class TestCandlesRegocnition(unittest.TestCase):
             print(pattern_detection)
             charts.plot_candles_simple(candles)
             self.fail("Pattern was not detected")
-
-if __name__ == '__main__':
-    unittest.main()
