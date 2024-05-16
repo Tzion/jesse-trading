@@ -20,7 +20,6 @@ class TestCandlesRegocnition(unittest.TestCase):
         if not last_candle_detection:
             charts.plot_candles_simple(candles)
             self.fail("Pattern was not detected")
-            print(pattern_detection)
         if force_chart:
             charts.plot_candles_simple(candles)
 
@@ -37,20 +36,20 @@ class TestCandlesRegocnition(unittest.TestCase):
 
     def test_shooting_star(self):
         candles = {
-            'open': [8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 7.9, 8.2, 9.4, 9],
-            'high': [8.8, 8.8, 8.8, 8.8, 8.8, 8.8, 8.8, 8.8, 9.0, 9.0, 10.5, 9.0],
-            'low': [7.5, 7.5, 7.5, 7.5, 7.5, 7.5, 7.5, 7.5, 7.8, 7.9, 9.2, 8.0],
-            'close': [8.5, 8.7, 8.7, 8.7, 8.7, 8.7, 8.7, 8.7, 8.1, 9.0, 9.2, 8.0]
+            'open': [8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 7.9, 8.2, 9.4, 9],
+            'high': [8.0, 8.8, 8.8, 8.8, 8.8, 8.8, 8.8, 8.8, 8.8, 9.0, 9.0, 10.5, 9.0],
+            'low': [8.0, 7.5, 7.5, 7.5, 7.5, 7.5, 7.5, 7.5, 7.5, 7.8, 7.9, 9.2, 8.0],
+            'close': [8.0, 8.5, 8.7, 8.7, 8.7, 8.7, 8.7, 8.7, 8.7, 8.1, 9.0, 9.2, 8.0]
         }
         self.verify_pattern(talib.CDLSHOOTINGSTAR, candles, detection_idx=-2)
 
 
     def test_pandas_ta_shooting_star(self):
         candles = {
-            'open': pd.Series([8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 7.9, 8.2, 9.4, 9.0]),
-            'high': pd.Series([8.8, 8.8, 8.8, 8.8, 8.8, 8.8, 8.8, 8.8, 9.0, 9.0, 10.5, 9.0]),
-            'low': pd.Series([7.5, 7.5, 7.5, 7.5, 7.5, 7.5, 7.5, 7.5, 7.8, 7.9, 9.2, 8.0]),
-            'close': pd.Series([8.5, 8.7, 8.7, 8.7, 8.7, 8.7, 8.7, 8.7, 8.1, 9.0, 9.2, 8.0])
+            'open': pd.Series([ 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 7.9, 8.2, 9.4, 9.0]),
+            'high': pd.Series([ 8.8, 8.8, 8.8, 8.8, 8.8, 8.8, 8.8, 8.8, 9.0, 9.0, 10.5, 9.0]),
+            'low': pd.Series([ 7.5, 7.5, 7.5, 7.5, 7.5, 7.5, 7.5, 7.5, 7.8, 7.9, 9.2, 8.0]),
+            'close': pd.Series([ 8.5, 8.7, 8.7, 8.7, 8.7, 8.7, 8.7, 8.7, 8.1, 9.0, 9.2, 8.0])
         }
         pattern_detection = pta.cdl_pattern(candles['open'], candles['high'], candles['low'], candles['close'], name='shootingstar', talib=False)
         last_candle_detection = pattern_detection.iloc[-2] != 0
