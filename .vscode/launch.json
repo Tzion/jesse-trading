@@ -16,6 +16,9 @@
             "console": "integratedTerminal",
             "justMyCode": false,
             "cwd": "${workspaceFolder}/jesse_trading/jesse_bot",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/jesse_trading:${env:PYTHONPATH}"
+            }
         },
         {
             "name": "Python: Current File",

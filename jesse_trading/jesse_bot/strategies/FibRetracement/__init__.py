@@ -1,3 +1,4 @@
+from analyzers.candle_patterns import IntraDayCandlePattern as idcp
 from jesse.strategies import Strategy, cached
 from jesse import utils
 import jesse.indicators as ta
@@ -90,15 +91,15 @@ class FibRetracement(Strategy):
     def should_short(self) -> bool:
         daily_open = self.get_candles(self.exchange, self.symbol,'1D')[-1][OPEN_IDX] 
         open_around_yesterdays_low = daily_open - self.yest_range * 0.1 <= daily_open <= daily_open + self.yest_range * 0.1
-        reversal_pattern = pta.cdl_pattern(pd.Series(self.candles[-1:,OPEN_IDX]),
-                                           pd.Series(self.candles[-1:,HIGH_IDX]),
-                                           pd.Series(self.candles[-1:,LOW_IDX]),
-                                           pd.Series(self.candles[-1:,CLOSE_IDX], name='shootingstar')
+        reversal_pattern = idcp.shooting_star(self.candles[-10:,OPEN_IDX],
+                                           self.candles[-10:,HIGH_IDX],
+                                           self.candles[-10:,LOW_IDX],
+                                           self.candles[-10:,CLOSE_IDX]
         )
-        if reversal_pattern: 
+        if reversal_pattern[-1]: 
             logger.info(f"reversal pattern: {reversal_pattern}")
 
-        if self.trend_down and open_around_yesterdays_low and reversal_pattern:
+        if self.trend_down and reversal_pattern[-1]:
             return True
 
         return False
@@ -106,8 +107,8 @@ class FibRetracement(Strategy):
     
     def go_short(self):
         stop_price = self.price + self.fib_61 - self.fib_38
-        self.qty = utils.risk_to_qty(self.capital, (50/self.capital)*100, self.price, stop_price)
-        self.buy = self.qty, self.price
+        self.qty = utils.risk_to_qty(self.balance, (50/self.balance)*100, self.price, stop_price)
+        self.sell = self.qty, self.price
         # Prapare prices for next orders (can be placed only after order execution)
         self.stop_loss = self.qty, stop_price
         self.take_profit = [(self.qty, self.price + 1 * (self.price - stop_price)), (self.qty, self.price + 2 * (self.price - stop_price))]
