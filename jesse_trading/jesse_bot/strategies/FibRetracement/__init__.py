@@ -68,25 +68,6 @@ class FibRetracement(Strategy):
                     logger.info("reversal low is higher than yesterday's low")
                 logger.info(f"reversal took {i} candles")
         
-        
-        
-    def should_long(self) -> bool:
-        # if self.trend_down:
-        #     if self.candles[-1][LOW_IDX] <= self.yest_low:
-        #         i = -2
-        #         while self.candles[i][TIME_IDX] >= self.start_of_day:
-        #             if self.candles[i][LOW_IDX] < self.yest_low or self.candles[i][HIGH_IDX] > self.fib_61:
-        #                 logger.error(f"Low of candle {i} is below yesterday's low or high is above 61.8%")
-        #                 return
-        #             else: 
-        #                 i -= 1
-        #         logger.info("candles in range")
-        return False
-
-    
-    def go_long(self):
-        pass
-
     
     def should_short(self) -> bool:
         daily_open = self.get_candles(self.exchange, self.symbol,'1D')[-1][OPEN_IDX] 
@@ -96,12 +77,8 @@ class FibRetracement(Strategy):
                                            self.candles[-10:,LOW_IDX],
                                            self.candles[-10:,CLOSE_IDX]
         )
-        if reversal_pattern[-1]: 
-            logger.info(f"reversal pattern: {reversal_pattern}")
-
         if self.trend_down and reversal_pattern[-1]:
             return True
-
         return False
 
     
@@ -111,7 +88,7 @@ class FibRetracement(Strategy):
         self.sell = self.qty, self.price
         # Prapare prices for next orders (can be placed only after order execution)
         self.stop_loss = self.qty, stop_price
-        self.take_profit = [(self.qty, self.price + 1 * (self.price - stop_price)), (self.qty, self.price + 2 * (self.price - stop_price))]
+        self.take_profit = [(self.qty/2, self.price + 1.5 * (self.price - stop_price)), (self.qty/2, self.price + 2 * (self.price - stop_price))]
         # self.pending_stop_loss = self.price - self.stop_length
         # self.pending_take_profit_1 = self.price + 1 * self.stop_length
         # self.pending_take_profit_2 = self.price + 2 * self.stop_length
@@ -124,5 +101,11 @@ class FibRetracement(Strategy):
         pass
 
     
+    def should_long(self) -> bool:
+        pass
+
+    def go_long(self):
+        pass
+
     def should_cancel_entry(self) -> bool:
         return True
