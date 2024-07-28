@@ -21,12 +21,25 @@
             }
         },
         {
+            "name": "Import candles from csv file(s)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/jesse_trading/utils/import_candles.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            // "args": "--path /Users/zions/equity-streamliner/interactive_brokers/data/SPY__2024-07-15::2024-07-26_1-min__ADJUSTED_LAST__SMART.csv --dry-run",
+            "args": "--path /Users/zions/equity-streamliner/interactive_brokers/data/SPY__2023-07-28::2024-07-26_1-min__ADJUSTED_LAST__SMART.csv --dry-run",
+            "cwd": "${workspaceFolder}/jesse_trading/jesse_bot",
+        },
+        {
             "name": "Python: Current File",
             "type": "debugpy",
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": false,
+            "args": "${command:pickArgs}",
+            "cwd": "${workspaceFolder}/jesse_trading/jesse_bot",
         }
     ]
 }
