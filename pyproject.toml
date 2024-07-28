@@ -11,6 +11,7 @@ jesse = {path = "jesse", develop = true}
 pandas-ta = "^0.3.14b0"
 ta-lib = "^0.4.28"
 ipython = "7.16.1"
+fnc = "^0.5.3"
     
 
 [build-system]

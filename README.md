@@ -63,7 +63,7 @@ pg_ctl -D jesse_trading/db_postgres/ start
 ```sh
 redis-server
 ```
-- Start Jesse (while virtual env is activated)
+- Start Jesse (while virtual env is activated and inside jesse_bot directory)
 ```sh
 jesse run
 ```
