@@ -49,7 +49,7 @@ def _import_candles(directory, filename, dry_run=False):
         df = pd.read_csv(os.path.join(directory, filename))
         df['date'] = pd.to_datetime(df['date'])
         df.rename(columns={'date': 'timestamp'}, inplace=True)
-        df['timestamp'] = df['timestamp'].astype(int) / 1e6  # convert datetime to unix timestamp
+        df['timestamp'] = df['timestamp'].apply(lambda x: int(x.timestamp() * 1e3)) # convert datetime to unix timestamp
 
 
         # Reorder columns as jesse expects candles to be in format:
