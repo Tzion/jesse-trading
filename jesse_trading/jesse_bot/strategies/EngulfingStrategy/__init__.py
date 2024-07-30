@@ -3,6 +3,7 @@ import jesse.indicators as ta
 from jesse import utils
 import jesse.services.logger as logger
 import talib
+from analyzers.candle_patterns import IntraDayCandlePattern as idcp
 
 """
 Rules: bullish engulfing candle when rsi is above 50 and price is above EMA 200
@@ -26,7 +27,7 @@ class EngulfingStrategy(Strategy):
         super().__init__()
         self.risk_amount = 50
         self.proceed_stop = True
-        self.max_open_trades = 3
+        self.max_open_trades = 10000 # a workaround to the bug that count closed positions too
 
     def should_long(self) -> bool:
         ema_200 = ta.ema(self.candles, period=200, source_type='close', sequential=True)
@@ -47,8 +48,8 @@ class EngulfingStrategy(Strategy):
         self.engulfing = talib.CDLENGULFING(self.candles[-2:, OPEN_IDX], self.candles[-2:, HIGH_IDX], self.candles[-2:, LOW_IDX], self.candles[-2:, CLOSE_IDX])
         engulfing_candle = current[CLOSE_IDX] >= previous[OPEN_IDX] > previous[CLOSE_IDX] >= current[OPEN_IDX]
         engulfing_candle_no_eq = current[CLOSE_IDX] > previous[OPEN_IDX] > previous[CLOSE_IDX] > current[OPEN_IDX]
-        full_engulfing_candle = current[CLOSE_IDX] > previous[HIGH_IDX] and current[OPEN_IDX] < previous[LOW_IDX] and previous[OPEN_IDX] > previous[CLOSE_IDX]
-        if (engulfing_candle_no_eq and self.engulfing[-1] != 100):
+        engulfing__wicks_candle = current[CLOSE_IDX] > previous[HIGH_IDX] and current[OPEN_IDX] < previous[LOW_IDX] and previous[OPEN_IDX] > previous[CLOSE_IDX]
+        if (engulfing_candle_no_eq and self.engulfing[-1] == 0):
             logger.error(f"Mismatch of engulfing candle")
         engulfing_candle_talib = self.engulfing[-1] == 100
         # Rule 4: candle is big but not too big
@@ -64,7 +65,8 @@ class EngulfingStrategy(Strategy):
 
         # Entry Rule
         if uptrend and rsi_above_midpoint and engulfing_candle and right_size_candle:
-            if position_size > 0.4 * self.portfolio_value:
+        # if  engulfing_candle and right_size_candle:
+            if position_size > 1.0 * self.portfolio_value:
                 logger.error(f"Position size of {self.symbol} is too large: {position_size}")
                 return False
             if position_size > self.balance:
