@@ -26,10 +26,16 @@ class EngulfingStrategy(Strategy):
     def __init__(self):
         super().__init__()
         self.risk_amount = 50
-        self.proceed_stop = True
+        self.proceed_stop = False
         self.max_open_trades = 10000 # a workaround to the bug that count closed positions too
 
-    def should_long(self) -> bool:
+    def should_long(self):
+        pass
+
+    def go_long(self):
+        pass
+
+    def should_short(self) -> bool:
         ema_200 = ta.ema(self.candles, period=200, source_type='close', sequential=True)
         rsi_9 = ta.rsi(self.candles, period=9, sequential=True)
         previous = self.candles[-2]
@@ -58,9 +64,9 @@ class EngulfingStrategy(Strategy):
         right_size_candle = 2 * atr < tr #< 4 * atr
 
         # Prices
-        self.stop_length = 1 * (self.high - self.low)
+        self.stop_length = -1 * (self.high - self.low)
         # self.take_profit_length = 1 * self.stop_length
-        self.qty = self.risk_amount / self.stop_length
+        self.qty = abs(self.risk_amount / self.stop_length)
         position_size = self.qty * self.price
 
         # Entry Rule
@@ -80,13 +86,13 @@ class EngulfingStrategy(Strategy):
     def should_cancel_entry(self) -> bool:
         pass
 
-    def go_long(self):
+    def go_short(self):
         # logger.info('open trades {}'.format(self.trades_count))
-        self.buy = self.qty, self.price
+        self.sell = self.qty, self.price
         # Prapare prices for next orders (can be placed only after order execution)
         self.pending_stop_loss = self.price - self.stop_length
         self.pending_take_profit_1 = self.price + 1 * self.stop_length
-        self.pending_take_profit_2 = self.price + 2 * self.stop_length
+        self.pending_take_profit_2 = self.price + 1 * self.stop_length
 
 
     def on_open_position(self, order):
@@ -101,7 +107,7 @@ class EngulfingStrategy(Strategy):
                 logger.info(f"Proceeding stop to entry price")
                 self.stop_loss = self.position.qty, self.position.entry_price
 
-        if self.engulfing[-1] == -100:
+        if self.engulfing[-1] == 100:
             new_stop_loss = self.candles[-2][LOW_IDX]
             logger.info(f"Bearish engulfing candle detected - setting stop to {new_stop_loss}")
             self.stop_loss = new_stop_loss
