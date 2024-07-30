@@ -3,17 +3,16 @@ import jesse.indicators as ta
 from jesse import utils
 import jesse.services.logger as logger
 import talib
-
 """
 Rules: bullish engulfing candle when rsi is above 50 and price is above EMA 200
 """
-
 
 OPEN_IDX = 1
 CLOSE_IDX = 2
 HIGH_IDX = 3
 LOW_IDX = 4
 VOLUME_IDX = 5
+
 
 class HammerStrategy(Strategy):
 
@@ -34,7 +33,8 @@ class HammerStrategy(Strategy):
         # Rule 2: RSI is above 50
         rsi_above_midpoint = rsi_9[-1] > 50
         # Rule 3: Bullish engulfing candle
-        self.hammer = talib.CDLHAMMER(self.candles[-2:, OPEN_IDX], self.candles[-2:, HIGH_IDX], self.candles[-2:, LOW_IDX], self.candles[-2:, CLOSE_IDX])
+        self.hammer = talib.CDLHAMMER(self.candles[-2:, OPEN_IDX], self.candles[-2:, HIGH_IDX], self.candles[-2:, LOW_IDX],
+                                      self.candles[-2:, CLOSE_IDX])
         candles_body = abs(candle[CLOSE_IDX] - candle[OPEN_IDX])
         upper_wick = candle[HIGH_IDX] - max(candle[OPEN_IDX], candle[CLOSE_IDX])
         lower_wick = min(candle[OPEN_IDX], candle[CLOSE_IDX]) - candle[LOW_IDX]
@@ -44,9 +44,10 @@ class HammerStrategy(Strategy):
         # Rule 4: candle is big but not too big
         atr = ta.atr(self.candles, period=30)
         tr = ta.trange(self.candles)
-        right_size_candle = 2 * atr < tr #< 4 * atr
+        right_size_candle = 2 * atr < tr  #< 4 * atr
 
-        self.engulfing = talib.CDLENGULFING(self.candles[-2:, OPEN_IDX], self.candles[-2:, HIGH_IDX], self.candles[-2:, LOW_IDX], self.candles[-2:, CLOSE_IDX])
+        self.engulfing = talib.CDLENGULFING(self.candles[-2:, OPEN_IDX], self.candles[-2:, HIGH_IDX], self.candles[-2:, LOW_IDX],
+                                            self.candles[-2:, CLOSE_IDX])
 
         # Prices
         self.stop_length = 1 * (self.high - self.low)
@@ -56,11 +57,9 @@ class HammerStrategy(Strategy):
 
         # Entry Rule
         if (
-            # uptrend and
-            # rsi_above_midpoint and 
-            hammer_candle and 
-            right_size_candle
-        ):
+                # uptrend and
+                # rsi_above_midpoint and
+                hammer_candle and right_size_candle):
             if position_size > 0.4 * self.portfolio_value:
                 logger.error(f"Position size of {self.symbol} is too large: {position_size}")
                 return False
@@ -83,11 +82,10 @@ class HammerStrategy(Strategy):
         self.pending_take_profit_1 = self.price + 1 * self.stop_length
         self.pending_take_profit_2 = self.price + 2 * self.stop_length
 
-
     def on_open_position(self, order):
         qty = self.position.qty
         self.stop_loss = qty, self.pending_stop_loss
-        self.take_profit = [(qty/2, self.pending_take_profit_1), (qty/2, self.pending_take_profit_2)]
+        self.take_profit = [(qty / 2, self.pending_take_profit_1), (qty / 2, self.pending_take_profit_2)]
 
     def update_position(self):
         # proceed stop to entry price after movement of 1-risk
